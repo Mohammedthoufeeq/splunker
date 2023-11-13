@@ -18,9 +18,8 @@ Splunker is a Bash script designed to simplify the installation and configuratio
    ```bash
    git clone https://github.com/Mohammedthoufeeq/splunker
    cd splunker 
-   Run the script(as a root user): ./splunker.sh ```
-
-
+   Run the script(as a root user): ./splunker.sh
+   
 Follow the on-screen instructions to install and configure Splunk.
 
 ## Options
