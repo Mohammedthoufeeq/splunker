@@ -15,13 +15,18 @@ print_banner() {
 show_loading() {
     local message="$1"
     local duration="$2"
+    local chars="/-\|"
+
     echo -n -e "$message ...\e[33m"
-    for ((i = 0; i < duration; i++)); do
-        echo -n -e "/\b-\b\\\b"
-        sleep 1
+    
+    for ((i = 0; i < duration * 5; i++)); do
+        echo -n -e "${chars:i%4:1}\b"
+        sleep 0.2
     done
-    echo -e "\e[0m"
+    
+    echo -e "\e[32mDone\e[0m"
 }
+
 
 # Function to download and extract Splunk or UF
 download_and_extract() {
