@@ -95,7 +95,10 @@ check_splunk_systemd_units() {
 
         systemctl is-active --quiet "$splunk_service_name" && \
         show_loading "Splunk systemd unit file is active" 1 || \
-        echo -e "\e[31mSplunk systemd unit file is not active.[Use sysytemctl start {service.name}]\e[0m"
+        echo -e "\e[31mSplunk systemd unit file is not active.[Using sysytemctl to start service]\e[0m"
+        systemctl start "$splunk_service_name" && \
+            show_loading "Splunk systemd service started" 1 || \
+            echo -e "\e[31mFailed to start Splunk systemd service. Please start it manually.\e[0m"
     else
         echo -e "\e[31mSplunk systemd unit file not found.\e[0m"
     fi
