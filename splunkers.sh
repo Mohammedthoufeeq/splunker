@@ -9,7 +9,6 @@ print_banner() {
     ██░▀▀▀░██░█████░▀▀░██▄▀▀▄██░██▄░██░██░██░▀▀▀██░██░████▀▄█▄▀
     ▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀
     \e[0m"
-}
 
 # Function to show a loading indicator
 show_loading() {
@@ -26,7 +25,6 @@ show_loading() {
     
     echo -e "\e[32mDone\e[0m"
 }
-
 
 # Function to download and extract Splunk or UF
 download_and_extract() {
@@ -53,8 +51,12 @@ create_user_if_not_exists() {
 add_user_to_sudoers() {
     local username="splunker"
 
-    grep "$username" /etc/passwd || echo "$username ALL=(ALL:ALL) ALL" >> /etc/sudoers && \
-    show_loading "Added user '$username' to sudoers file" 1
+    if ! grep -q "$username" /etc/sudoers; then
+        echo "$username ALL=(ALL:ALL) ALL" >> /etc/sudoers && \
+        show_loading "Added user '$username' to sudoers file" 1
+    else
+        show_loading "User '$username' already in sudoers file" 1
+    fi
 }
 
 # Function to configure Splunk for boot start
@@ -85,7 +87,7 @@ check_splunk_systemd_units() {
         splunk_service_name="Splunkd"
     fi
 
-    local splunk_systemd_service="/etc/systemd/system//multi-user.target.wants/${splunk_service_name}.service"
+    local splunk_systemd_service="/etc/systemd/system/multi-user.target.wants/${splunk_service_name}.service"
 
     if [ -f "$splunk_systemd_service" ]; then
         show_loading "Splunk systemd unit file found" 1
@@ -94,11 +96,12 @@ check_splunk_systemd_units() {
         echo -e "\e[31mSplunk systemd unit file is not enabled.\e[0m"
 
         systemctl is-active --quiet "$splunk_service_name" && \
-        show_loading "Splunk systemd unit file is active" 1 || \
-        echo -e "\e[31mSplunk systemd unit file is not active.[Using sysytemctl to start service]\e[0m"
-        systemctl start "$splunk_service_name" && \
+        show_loading "Splunk systemd unit file is active" 1 || {
+            echo -e "\e[31mSplunk systemd unit file is not active. Starting the service...\e[0m"
+            systemctl start "$splunk_service_name" && \
             show_loading "Splunk systemd service started" 1 || \
             echo -e "\e[31mFailed to start Splunk systemd service. Please start it manually.\e[0m"
+        }
     else
         echo -e "\e[31mSplunk systemd unit file not found.\e[0m"
     fi
@@ -115,7 +118,7 @@ create_or_fix_splunk_systemd_units() {
         splunk_service_name="Splunkd"
     fi
 
-    local splunk_systemd_service="/etc/systemd/system//multi-user.target.wants/${splunk_service_name}.service"
+    local splunk_systemd_service="/etc/systemd/system/multi-user.target.wants/${splunk_service_name}.service"
     local systemd_unit_content="[Unit]\nDescription=Splunk Daemon\n\n[Service]\nExecStart=${splunk_path}/bin/splunk start --accept-license\nExecStop=${splunk_path}/bin/splunk stop\nRestart=always\n\n[Install]\nWantedBy=multi-user.target"
 
     if [ -f "$splunk_systemd_service" ]; then
@@ -189,7 +192,7 @@ main() {
     # Create user if it doesn't exist
     create_user_if_not_exists
 
-    # Check if the user has a password, and if not, set a password
+    # Check if the user has a password, and f not, set a password
     [ -z "$(getent passwd splunker | cut -d: -f2)" ] && passwd splunker || \
     show_loading "User 'splunker' already has a password" 1
 
