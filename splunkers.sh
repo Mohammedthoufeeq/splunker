@@ -192,7 +192,7 @@ main() {
     # Create user if it doesn't exist
     create_user_if_not_exists
 
-    # Check if the user has a password, and f not, set a password
+    # Check if the user has a password, and if not, set a password
     [ -z "$(getent passwd splunker | cut -d: -f2)" ] && passwd splunker || \
     show_loading "User 'splunker' already has a password" 1
 
@@ -212,3 +212,4 @@ main() {
 
 # Call the main function to execute the script
 main
+
