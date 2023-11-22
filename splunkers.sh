@@ -9,7 +9,7 @@ print_banner() {
     ██░▀▀▀░██░█████░▀▀░██▄▀▀▄██░██▄░██░██░██░▀▀▀██░██░████▀▄█▄▀
     ▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀
     \e[0m"
-
+}
 # Function to show a loading indicator
 show_loading() {
     local message="$1"
