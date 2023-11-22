@@ -131,6 +131,44 @@ create_or_fix_splunk_systemd_units() {
     fi
 }
 
+# Function to reset the password for a local user
+reset_password() {
+    echo -e "\e[34mReset Password\e[0m"
+    echo -e "\e[34m1. Reset password for 'ubuntu'\e[0m"
+    echo -e "\e[34m2. Reset password for 'ec2-user'\e[0m"
+    echo -e "\e[34m3. Enter custom username to reset password\e[0m"
+    echo -e "\e[34m4. Go back to main menu\e[0m"
+
+    read -p "Select an option (1/2/3/4): " choice
+
+    case $choice in
+        1)
+            username="ubuntu"
+            ;;
+        2)
+            username="ec2-user"
+            ;;
+        3)
+            read -p "Enter the username to reset password: " username
+            ;;
+        4)
+            echo -e "\e[34mReturning to the main menu.\e[0m"
+            return
+            ;;
+        *)
+            echo -e "\e[31mInvalid choice. Please select 1, 2, 3, or 4.\e[0m"
+            return
+            ;;
+    esac
+
+    # Check if the user exists
+    if id "$username" &>/dev/null; then
+        passwd "$username" || { echo -e "\e[31mFailed to reset password for $username.\e[0m"; return; }
+        echo -e "\e[32mPassword for $username has been reset successfully.\e[0m"
+    else
+        echo -e "\e[31mUser '$username' does not exist.\e[0m"
+    fi
+}
 # Main part of the script
 main() {
     local splunk_path=""
@@ -187,6 +225,9 @@ main() {
             echo -e "\e[31mInvalid choice. Please select 1, 2, 3, or 4.\e[0m"
             exit 1
             ;;
+        5)
+        reset_password
+        return
     esac
 
     # Create user if it doesn't exist
