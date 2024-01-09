@@ -169,6 +169,7 @@ reset_password() {
         echo -e "\e[31mUser '$username' does not exist.\e[0m"
     fi
 }
+
 # Main part of the script
 main() {
     local splunk_path=""
@@ -182,8 +183,9 @@ main() {
     echo -e "\e[34m1. Splunk Enterprise\e[0m"
     echo -e "\e[34m2. Universal Forwarder\e[0m"
     echo -e "\e[34m3. Check Splunk systemd unit files\e[0m"
-    echo -e "\e[34m4. Exit\e[0m"
-    read -p "Select an option (1/2/3/4): " choice
+    echo -e "\e[34m4. Reset Password\e[0m"
+    echo -e "\e[34m5. Exit\e[0m"
+    read -p "Select an option (1/2/3/4/5): " choice
 
     case $choice in
         1)
@@ -218,16 +220,17 @@ main() {
             exit 0
             ;;
         4)
+            reset_password
+            exit 0
+            ;;
+        5)
             echo -e "\e[34mExiting the script.\e[0m"
             exit 0
             ;;
         *)
-            echo -e "\e[31mInvalid choice. Please select 1, 2, 3, or 4.\e[0m"
+            echo -e "\e[31mInvalid choice. Please select 1, 2, 3, 4, or 5.\e[0m"
             exit 1
             ;;
-        5)
-        reset_password
-        return
     esac
 
     # Create user if it doesn't exist
@@ -253,4 +256,3 @@ main() {
 
 # Call the main function to execute the script
 main
-
