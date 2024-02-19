@@ -87,19 +87,20 @@ check_success "Failed to update yum.conf for IPv4 addresses"
 success "yum.conf updated for IPv4 addresses"
 
 # Prompt for UBA download link
-prompt "Enter UBA download link: "
+# Prompt for UBA download link
+echo -n "Enter UBA download link: "
 read uba_download_link
 
 # Download UBA and extract
 sudo su - caspida -c "umask"
 sudo su - caspida -c "[[ $? == 0 || $? == 2 ]] && umask 0022"
-sudo su - caspida -c "wget -O /home/caspida/uba.tgz $uba_download_link"
-sudo su - caspida -c "tar xvzf /home/caspida/uba.tgz -C /opt/caspida/"
+sudo  "wget -O /home/caspida/uba.tgz $uba_download_link"
+sudo  "tar xvzf /home/caspida/uba.tgz -C /home/caspida/"
 check_success "Failed to download and extract UBA"
 success "UBA downloaded and extracted successfully"
 
 # Find and extract Splunk-UBA-Platform package
-uba_platform_package=$(find /opt/caspida/ -type f -name "Splunk-UBA-Platform*.tgz" | head -n 1)
+uba_platform_package=$(find /home/caspida/ -type f -name "Splunk-UBA-Platform*.tgz" | head -n 1)
 if [ -z "$uba_platform_package" ]; then
   error "Unable to find Splunk-UBA-Platform package in /opt/caspida/"
 fi
