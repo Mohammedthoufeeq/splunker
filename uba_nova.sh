@@ -103,20 +103,15 @@ check_success "Failed to extract UBA"
 success "UBA downloaded and extracted successfully"
 
 # Find and extract Splunk-UBA-Platform package
-uba_platform_package=$(find /home/caspida/ -type f -name "Splunk-UBA-Platform*.tgz" | head -n 1)
-if [ -z "$uba_platform_package" ]; then
-  error "Unable to find Splunk-UBA-Platform package in /opt/caspida/"
-fi
-sudo tar xvzf "$uba_platform_package" -C /opt/caspida/
-check_success "Failed to extract Splunk-UBA-Platform package"
-success "Splunk-UBA-Platform package extracted successfully"
+# Untar the Splunk UBA platform software to the /opt/caspida directory.
+tar xvzf "/home/caspida/Splunk-UBA-Platform-5.3.0-20230810-11068359.tgz" -C /opt/caspida/
+check_success "Failed to extract Splunk UBA Platform package"
+success "Splunk UBA Platform package extracted successfully"
 
-# Find and extract Splunk-UBA-Packages-RHEL-8 package
-uba_packages_package=$(find /home/caspida/ -type f -name "Splunk-UBA-*.tgz" | head -n 1)
-if [ -z "$uba_packages_package" ]; then
-  error "Unable to find Splunk-UBA-Packages-RHEL-8 package in /home/caspida/"
-fi
-sudo tar xvzf "$uba_packages_package" -C /home/caspida/
+# Untar the Splunk UBA Packages for RHEL to the /home/caspida directory.
+tar xvzf "/home/caspida/Splunk-UBA-5.3-Packages-RHEL-8.tgz" -C /home/caspida/
+check_success "Failed to extract Splunk UBA Packages for RHEL"
+success "Splunk UBA Packages for RHEL extracted successfully"
 check_success "Failed to extract Splunk-UBA-Packages-RHEL-8 package"
 success "Splunk-UBA-Packages-RHEL-8 package extracted successfully"
 
