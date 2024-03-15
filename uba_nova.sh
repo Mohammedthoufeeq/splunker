@@ -44,6 +44,9 @@ success "User and group created successfully"
 sudo mkdir -p /var/vcap /var/vcap2
 sudo chmod 755 /var/vcap /var/vcap2
 sudo chown root:root /var/vcap /var/vcap2
+mkdir /opt/caspida
+chown caspida:caspida /opt/caspida
+chmod 755 /opt/caspida
 check_success "Failed to create directories"
 success "Directories created successfully"
 
