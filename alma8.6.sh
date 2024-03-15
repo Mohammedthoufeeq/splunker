@@ -36,7 +36,7 @@ sudo tee /etc/yum.repos.d/almalinux.repo > /dev/null <<EOF
 
 [baseos]
 name=AlmaLinux \$releasever - BaseOS
-baseurl=https://repo.almalinux.org/vault/8.6/BaseOS/x86_64/os/
+baseurl=https://repo.almalinux.org/vault/8.8/BaseOS/x86_64/os/
 enabled=1
 gpgcheck=1
 countme=1
@@ -44,7 +44,7 @@ gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-AlmaLinux
 
 [appstream]
 name=AlmaLinux \$releasever - AppStream
-baseurl=https://repo.almalinux.org/vault/8.6/AppStream/x86_64/os/
+baseurl=https://repo.almalinux.org/vault/8.8/AppStream/x86_64/os/
 enabled=1
 gpgcheck=1
 countme=1
@@ -52,7 +52,7 @@ gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-AlmaLinux
 
 [extras]
 name=AlmaLinux \$releasever - Extras
-baseurl=https://repo.almalinux.org/vault/8.6/extras/x86_64/os/
+baseurl=https://repo.almalinux.org/vault/8.8/extras/x86_64/os/
 enabled=1
 gpgcheck=1
 countme=1
@@ -71,19 +71,19 @@ success "/etc/hosts modified successfully"
 sudo cp /usr/lib/os-release /usr/lib/os-release.bak || error "Failed to create a backup of /usr/lib/os-release"
 sudo tee /usr/lib/os-release > /dev/null <<EOF
 NAME="Red Hat"
-VERSION="8.6 (Sapphire Caracal)"
+VERSION="8.8 (Sapphire Caracal)"
 ID="Red Hat"
 ID_LIKE="rhel centos fedora"
-VERSION_ID="8.6"
+VERSION_ID="8.8"
 PLATFORM_ID="platform:el8"
-PRETTY_NAME="Red Hat 8.6 (Sapphire Caracal)"
+PRETTY_NAME="Red Hat 8.8 (Sapphire Caracal)"
 EOF
 check_success "Failed to modify /usr/lib/os-release"
 success "/usr/lib/os-release modified successfully"
 
 # Modify /etc/almalinux-release file
 sudo cp /etc/almalinux-release /etc/almalinux-release.bak || error "Failed to create a backup of /etc/almalinux-release"
-echo "Red Hat release 8.6 (Sapphire Caracal)" | sudo tee /etc/almalinux-release > /dev/null
+echo "Red Hat release 8.8 (Sapphire Caracal)" | sudo tee /etc/almalinux-release > /dev/null
 check_success "Failed to modify /etc/almalinux-release"
 success "/etc/almalinux-release modified successfully"
 
